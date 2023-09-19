@@ -4,10 +4,10 @@ import os
 print("Iniciando el script...")
 
 # Ruta al archivo Excel
-ruta_excel = r"E:\PROYECTOS SEO\quevisitarenfrancia.com\IndexingAPI_Google\ParaIndexar\Libro1.xlsx"
+ruta_excel = r"E:\PROYECTOS SEO\quevisitarenestadosunidos.com\IndexacionAPI\tu_archivo.xlsx"
 
 # Ruta al directorio de salida
-ruta_output = r"E:\PROYECTOS SEO\quevisitarenfrancia.com\IndexingAPI_Google\ParaIndexar\output_txt_files"
+ruta_output = r"E:\PROYECTOS SEO\quevisitarenestadosunidos.com\IndexacionAPI\output_txt_files"
 
 print(f"Leyendo el archivo Excel desde {ruta_excel}...")
 # Leer el archivo Excel
@@ -23,19 +23,32 @@ if not os.path.exists(ruta_output):
 print("Obteniendo la primera columna del archivo Excel...")
 primera_columna = df.iloc[:, 0]
 
-# Dividir la columna en fragmentos de 199 filas
-print("Dividiendo la primera columna en fragmentos de 199 filas...")
-batches = [primera_columna[i:i+199] for i in range(0, len(primera_columna), 199)]
+# Iniciar una lista temporal y un contador para los archivos de salida
+temp_list = []
+file_counter = 1
 
-# Crear archivos .txt para cada lote
-print("Creando archivos .txt para cada fragmento...")
-for i, batch in enumerate(batches):
-    filename = os.path.join(ruta_output, f"batch{i+1}.txt")
+print("Filtrando y agrupando los registros...")
+for item in primera_columna:
+    # Solo añadir el ítem a la lista temporal si su URL no termina en '/feed/'
+    if not str(item).endswith('/feed/'):
+        temp_list.append(item)
+
+    # Si la lista temporal tiene 199 elementos, guardarlos en un archivo y limpiar la lista
+    if len(temp_list) == 199:
+        filename = os.path.join(ruta_output, f"batch{file_counter}.txt")
+        print(f"Guardando {filename}...")
+        with open(filename, 'w') as f:
+            for line in temp_list:
+                f.write(f"{line}\n")
+        temp_list.clear()
+        file_counter += 1
+
+# Guardar cualquier elemento restante en un nuevo archivo
+if temp_list:
+    filename = os.path.join(ruta_output, f"batch{file_counter}.txt")
     print(f"Guardando {filename}...")
     with open(filename, 'w') as f:
-        for item in batch:
-            # Solo escribir el ítem si su URL no termina en '/feed'
-            if not str(item).endswith('/feed/'):
-                f.write(f"{item}\n")
+        for line in temp_list:
+            f.write(f"{line}\n")
 
 print("El script ha finalizado exitosamente.")
