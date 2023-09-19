@@ -34,6 +34,8 @@ for i, batch in enumerate(batches):
     print(f"Guardando {filename}...")
     with open(filename, 'w') as f:
         for item in batch:
-            f.write(f"{item}\n")
+            # Solo escribir el ítem si su URL no termina en '/feed'
+            if not str(item).endswith('/feed'):
+                f.write(f"{item}\n")
 
 print("El script ha finalizado exitosamente.")
