@@ -4,10 +4,10 @@ import os
 print("Iniciando el script...")
 
 # Ruta al archivo Excel
-ruta_excel = r"E:\PROYECTOS SEO\quevisitarenestadosunidos.com\IndexacionAPI\tu_archivo.xlsx"
+ruta_excel = r"E:\PROYECTOS SEO\quevisitarenfrancia.com\IndexingAPI_Google\ParaIndexar\Libro1.xlsx"
 
 # Ruta al directorio de salida
-ruta_output = r"E:\PROYECTOS SEO\quevisitarenestadosunidos.com\IndexacionAPI\output_txt_files"
+ruta_output = r"E:\PROYECTOS SEO\quevisitarenfrancia.com\IndexingAPI_Google\ParaIndexar\output_txt_files"
 
 print(f"Leyendo el archivo Excel desde {ruta_excel}...")
 # Leer el archivo Excel
@@ -35,7 +35,7 @@ for i, batch in enumerate(batches):
     with open(filename, 'w') as f:
         for item in batch:
             # Solo escribir el ítem si su URL no termina en '/feed'
-            if not str(item).endswith('/feed'):
+            if not str(item).endswith('/feed/'):
                 f.write(f"{item}\n")
 
 print("El script ha finalizado exitosamente.")
